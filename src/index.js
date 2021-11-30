@@ -3,6 +3,7 @@ import {
     getFirestore, collection, onSnapshot,
     addDoc, deleteDoc, doc, serverTimestamp, query, orderBy
 } from 'firebase/firestore'
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 
 
 const firebaseConfig = {
@@ -17,8 +18,9 @@ const firebaseConfig = {
   // init Firebase 
   initializeApp(firebaseConfig);
 
-  // init Firestore 
+  // init service 
   const db = getFirestore();
+  const auth = getAuth();
 
   // Collection Referance 
   const colRef = collection(db, 'books');
@@ -67,3 +69,36 @@ deleteBookForm.addEventListener('submit', (e) => {
     })
 
 })
+
+// signup form
+const signupForm = document.querySelector('.signup');
+signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const email     = signupForm.email.value;
+    const password  = signupForm.password.value; 
+
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => { 
+        console.log(' user credentials : ',cred.user);
+    })
+    .catch((err) => {
+        console.log(err.message);
+    })
+})
+
+
+// login form
+const loginForm = document.querySelector('.login');
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+})
+
+
+// logout button 
+
+const logoutButton = document.querySelector('.logout');
+logoutButton.addEventListener('submit', (e) => { 
+    e.preventDefault();
+}) 
